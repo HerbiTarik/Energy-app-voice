@@ -15,12 +15,6 @@ import axios from "axios";
 const SpeechScreen = () => {
   const [recognizing, setRecognizing] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const [lumiere, setLumiere] = useState(false);
-  const [televiseur, setTeleviseur] = useState(false);
-  const [fenetre, setFenetre] = useState(false);
-  const [four, setFour] = useState(false);
-  const [leds, setLeds] = useState(false);
-  const [ventilateur, setVentilateur] = useState(false);
 
   // const containsWords = (text, wordGroups) => {
   //   return wordGroups.every((group) =>
@@ -61,52 +55,73 @@ const SpeechScreen = () => {
     );
   };
 
-  const wordGroups = [
-    ["Ok", "merci", "bonjour"], // Variantes de "allume"
-  ];
+  const voiceLumiere = [["ampoule", "lampe", "lumière", "l'ampoule"]];
+  const voiceTeleviseur = [["téléviseur", "télévision"]];
+  const voiceFenetre = [["fenêtre"]];
+  const voiceFour = [["four", "plaque chauffante"]];
+  const voiceLeds = [["led", "leds", "LED", "LEDs"]];
+  const voiceVentilateur = [["ventilateur", "ventilation"]];
 
-  const lumiereExist = containsWords(transcript, wordGroups);
+  const lumiereExist = containsWords(transcript, voiceLumiere);
+  const televiseurExist = containsWords(transcript, voiceTeleviseur);
+  const fenetreExist = containsWords(transcript, voiceFenetre);
+  const fourExist = containsWords(transcript, voiceFour);
+  const ledsExist = containsWords(transcript, voiceLeds);
+  const ventilateurExist = containsWords(transcript, voiceVentilateur);
+
   console.log(lumiereExist);
-
-  // const voiceLumiere = [];
-  // const voiceTeleviseur = ["Téléviseur", "Télévision"];
-  // const voiceFenetre = ["fenêtre"];
-  // const voiceFour = ["four", "plaque chauffante"];
-  // const voiceLeds = ["led", "leds"];
-  // const voiceVentilateur = ["ventilateur", "ventilation"];
-
-  // if (lumiereExist) {
-  //   setLumiere(lumiereExist);
-  // }
-  // const televiseurExist = containsWords(transcript, voiceTeleviseur);
-  // if (televiseurExist) {
-  //   setTeleviseur(televiseurExist);
-  // }
-  // const fenetreExist = containsWords(transcript, voiceFenetre);
-  // if (fenetreExist) {
-  //   setFenetre(fenetreExist);
-  // }
-  // const fourExist = containsWords(transcript, voiceFour);
-  // if (fourExist) {
-  //   setFour(fourExist);
-  // }
-  // const ledsExist = containsWords(transcript, voiceLeds);
-  // if (ledsExist) {
-  //   setLeds(ledsExist);
-  // }
-  // const ventilateurExist = containsWords(transcript, voiceVentilateur);
-  // if (ventilateurExist) {
-  //   setVentilateur(ventilateurExist);
-  // }
-
-  // console.log(transcript);
-  // console.log(lumiere);
 
   useEffect(() => {
     const data = {
       voix_detectee: transcript,
     };
     if (lumiereExist) {
+      const updateDevices = async () => {
+        try {
+          const response = await axios.put(
+            "http://10.0.2.2:3001/api/devices/1",
+            data,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (response.status == 200) {
+            console.log(response.data);
+            setTranscript("");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      updateDevices();
+    }
+
+    if (televiseurExist) {
+      const updateDevices = async () => {
+        try {
+          const response = await axios.put(
+            "http://10.0.2.2:3001/api/devices/2",
+            data,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (response.status == 200) {
+            console.log(response.data);
+            setTranscript("");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      updateDevices();
+    }
+
+    if (fenetreExist) {
       const updateDevices = async () => {
         try {
           const response = await axios.put(
@@ -118,7 +133,79 @@ const SpeechScreen = () => {
               },
             }
           );
-          console.log(response.data);
+          if (response.status == 200) {
+            console.log(response.data);
+            setTranscript("");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      updateDevices();
+    }
+
+    if (fourExist) {
+      const updateDevices = async () => {
+        try {
+          const response = await axios.put(
+            "http://10.0.2.2:3001/api/devices/4",
+            data,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (response.status == 200) {
+            console.log(response.data);
+            setTranscript("");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      updateDevices();
+    }
+
+    if (ledsExist) {
+      const updateDevices = async () => {
+        try {
+          const response = await axios.put(
+            "http://10.0.2.2:3001/api/devices/5",
+            data,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (response.status == 200) {
+            console.log(response.data);
+            setTranscript("");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      updateDevices();
+    }
+
+    if (ventilateurExist) {
+      const updateDevices = async () => {
+        try {
+          const response = await axios.put(
+            "http://10.0.2.2:3001/api/devices/6",
+            data,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (response.status == 200) {
+            console.log(response.data);
+            setTranscript("");
+          }
         } catch (error) {
           console.error(error);
         }
