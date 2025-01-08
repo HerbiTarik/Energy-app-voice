@@ -11,8 +11,11 @@ import ampoule from "../assets/ampoule.png";
 import ampouleAlumee from "../assets/ampouleAlumee.png";
 import Appareils from "./Appareils";
 import axios from "axios";
+import { setVoice } from "../redux/voiceSlice";
+import { useDispatch } from "react-redux";
 
 const SpeechScreen = () => {
+  const dispatch = useDispatch();
   const [recognizing, setRecognizing] = useState(false);
   const [transcript, setTranscript] = useState("");
 
@@ -68,8 +71,6 @@ const SpeechScreen = () => {
   const fourExist = containsWords(transcript, voiceFour);
   const ledsExist = containsWords(transcript, voiceLeds);
   const ventilateurExist = containsWords(transcript, voiceVentilateur);
-
-  console.log(lumiereExist);
 
   useEffect(() => {
     const data = {
@@ -214,6 +215,10 @@ const SpeechScreen = () => {
     }
   }, [transcript]);
 
+  useEffect(() => {
+    dispatch(setVoice({ voice: transcript }));
+  }, [transcript]);
+
   return (
     <View className="flex-1">
       <View className="mb-20 mt-28 items-center">
@@ -229,7 +234,7 @@ const SpeechScreen = () => {
       </View>
 
       <Appareils />
-      <Text>{transcript}</Text>
+      {/* <Text className="text-white">{transcript}</Text> */}
     </View>
   );
 };
