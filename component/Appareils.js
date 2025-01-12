@@ -186,7 +186,7 @@ const Appareils = () => {
       >
         <View className="flex-1 justify-center items-center">
           <Image source={{ uri: imageUri }} className="w-24 h-24" />
-          <Text className="text-center">{item.appareil}</Text>
+          <Text className="text-center font-bold">{item.appareil}</Text>
         </View>
       </BlurView>
     );

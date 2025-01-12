@@ -74,56 +74,6 @@ const SpeechScreen = () => {
   const humExist = containsWords(transcript, voiceHum);
   const engExist = containsWords(transcript, voiceEng);
 
-  // const extractNumbers = (phrase) => {
-  //   const wordsToNumber = {
-  //     zéro: "0",
-  //     un: "1",
-  //     deux: "2",
-  //     trois: "3",
-  //     quatre: "4",
-  //     cinq: "5",
-  //     six: "6",
-  //     sept: "7",
-  //     huit: "8",
-  //     neuf: "9",
-  //   };
-
-  //   // // Vérifier s'il y a des chiffres dans la phrase
-  //   // const containsNumber =
-  //   //   /\d/.test(phrase) ||
-  //   //   Object.keys(wordsToNumber).some((word) =>
-  //   //     phrase.toLowerCase().includes(word)
-  //   //   );
-
-  //   // if (!containsNumber) {
-  //   //   // Si la phrase ne contient pas de chiffres, on retourne un tableau vide
-  //   //   console.log("rien");
-  //   // }
-
-  //   // Séparer la phrase en mots
-  //   const words = phrase.split(" ");
-
-  //   // Extraire les chiffres, qu'ils soient en chiffres ou en lettres
-  //   return words
-  //     .map((word) => {
-  //       // Si le mot est un chiffre en lettres, on le remplace par le chiffre correspondant
-  //       if (wordsToNumber[word.toLowerCase()]) {
-  //         return wordsToNumber[word.toLowerCase()];
-  //       }
-  //       // Si le mot est un chiffre, on le garde
-  //       if (/\d/.test(word)) {
-  //         return word;
-  //       }
-  //       // Sinon, on retourne null
-  //       return null;
-  //     })
-  //     .filter(Boolean); // Filtrer les éléments null pour garder seulement les chiffres
-  // };
-
-  // const num = extractNumbers(transcript);
-
-  // setExtrNumber(num[0]);
-
   const dispatchVoice = (cmpExist, id) => {
     const data = {
       voix_detectee: transcript,

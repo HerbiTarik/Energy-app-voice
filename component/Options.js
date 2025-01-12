@@ -34,34 +34,6 @@ const Options = () => {
   const renderItem = ({ item }) => {
     let imageUri = item.img;
 
-    const containsWords = (text, wordGroups) => {
-      return wordGroups.every((group) =>
-        group.some((word) => text.includes(word))
-      );
-    };
-
-    const voicePs = [
-      ["activer", "active", "à"],
-      ["panneaux solaires", "panneax solaire"],
-    ];
-
-    const notVoicePs = [
-      ["pas activer", "ne pas activer", "n'active", "désactiver", "désactive"],
-      ["panneaux solaires", "panneax solaire"],
-    ];
-
-    if (item.id === 3) {
-      const PsExist = containsWords(item.voix_detectee, voicePs);
-      const notPsExist = containsWords(item.voix_detectee, notVoicePs);
-      if (notPsExist) {
-        imageUri = item.img;
-      } else if (PsExist) {
-        imageUri = item.img_v;
-      } else {
-        imageUri = item.img;
-      }
-    }
-
     const extractNumbers = (phrase) => {
       const wordsToNumber = {
         zéro: "0",
@@ -100,16 +72,46 @@ const Options = () => {
     const numbers = extractNumbers(phrase);
     console.log(numbers[0]); // Affichera : ["2", "3"]
 
+    const containsWords = (text, wordGroups) => {
+      return wordGroups.every((group) =>
+        group.some((word) => text.includes(word))
+      );
+    };
+
+    const voicePs = [
+      ["activer", "active", "à"],
+      ["panneaux solaires", "panneax solaire"],
+    ];
+
+    const notVoicePs = [
+      ["pas activer", "ne pas activer", "n'active", "désactiver", "désactive"],
+      ["panneaux solaires", "panneax solaire"],
+    ];
+
+    if (item.id === 3) {
+      const PsExist = containsWords(item.voix_detectee, voicePs);
+      const notPsExist = containsWords(item.voix_detectee, notVoicePs);
+      if (notPsExist) {
+        imageUri = item.img;
+      } else if (PsExist || numbers[0]) {
+        imageUri = item.img_v;
+      } else {
+        imageUri = item.img;
+      }
+    }
+
     return (
       <BlurView
         intensity={80}
         className=" rounded-xl overflow-hidden p-5 flex-1 m-5"
       >
-        <View className="flex-row justify-around items-center">
+        <View className="flex-row justify-between items-center">
           <Image source={{ uri: imageUri }} className="w-24 h-24" />
-          <Text className="text-center">{item.option}</Text>
-          <Text className="text-center">
-            {numbers[0] ? numbers[0] : "0"} °C
+          <Text className="text-center text-[16px] text-[white] font-bold">
+            {item.option}
+          </Text>
+          <Text className="text-center text-[16px] font-bold text-[white]">
+            {numbers[0] ? numbers[0] : "0"} {item.mesure}
           </Text>
         </View>
       </BlurView>
