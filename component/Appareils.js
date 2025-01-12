@@ -20,7 +20,7 @@ const Appareils = () => {
     fetchDevices();
   }, [voice]);
 
-  console.log(voice);
+  // console.log(voice);
 
   const renderItem = ({ item }) => {
     let imageUri = item.img;

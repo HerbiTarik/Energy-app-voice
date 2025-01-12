@@ -21,6 +21,26 @@ const controllerVoice = {
       res.status(500).json({ error: error.message });
     }
   },
+  getAllOptions: async (req, res) => {
+    try {
+      const options = await modelVoice.findOptions();
+      res.status(200).json(options);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message });
+    }
+  },
+  putOptions: async (req, res) => {
+    const { voix_detectee } = req.body;
+    const { id } = req.params;
+    try {
+      const response = await modelVoice.updateOptions(id, voix_detectee);
+      res.status(200).json(response);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message });
+    }
+  },
 };
 
 module.exports = controllerVoice;

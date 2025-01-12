@@ -11,11 +11,13 @@ import Appareils from "./Appareils";
 import axios from "axios";
 import { setVoice } from "../redux/voiceSlice";
 import { useDispatch } from "react-redux";
+import Options from "./Options";
 
 const SpeechScreen = () => {
   const dispatch = useDispatch();
   const [recognizing, setRecognizing] = useState(false);
   const [transcript, setTranscript] = useState("");
+  const [ecran, setEcran] = useState(true);
 
   useSpeechRecognitionEvent("start", () => setRecognizing(true));
   useSpeechRecognitionEvent("end", () => setRecognizing(false));
@@ -58,6 +60,9 @@ const SpeechScreen = () => {
   const voiceVentilateur = [
     ["ventilateur", "ventilation", "climatiseur", "clim"],
   ];
+  const voiceTemp = [["température"]];
+  const voiceHum = [["humidité"]];
+  const voiceEng = [["panneau solaire", "panneaux solaires", "énergie"]];
 
   const lumiereExist = containsWords(transcript, voiceLumiere);
   const televiseurExist = containsWords(transcript, voiceTeleviseur);
@@ -65,16 +70,69 @@ const SpeechScreen = () => {
   const fourExist = containsWords(transcript, voiceFour);
   const ledsExist = containsWords(transcript, voiceLeds);
   const ventilateurExist = containsWords(transcript, voiceVentilateur);
+  const tempExist = containsWords(transcript, voiceTemp);
+  const humExist = containsWords(transcript, voiceHum);
+  const engExist = containsWords(transcript, voiceEng);
 
-  useEffect(() => {
+  // const extractNumbers = (phrase) => {
+  //   const wordsToNumber = {
+  //     zéro: "0",
+  //     un: "1",
+  //     deux: "2",
+  //     trois: "3",
+  //     quatre: "4",
+  //     cinq: "5",
+  //     six: "6",
+  //     sept: "7",
+  //     huit: "8",
+  //     neuf: "9",
+  //   };
+
+  //   // // Vérifier s'il y a des chiffres dans la phrase
+  //   // const containsNumber =
+  //   //   /\d/.test(phrase) ||
+  //   //   Object.keys(wordsToNumber).some((word) =>
+  //   //     phrase.toLowerCase().includes(word)
+  //   //   );
+
+  //   // if (!containsNumber) {
+  //   //   // Si la phrase ne contient pas de chiffres, on retourne un tableau vide
+  //   //   console.log("rien");
+  //   // }
+
+  //   // Séparer la phrase en mots
+  //   const words = phrase.split(" ");
+
+  //   // Extraire les chiffres, qu'ils soient en chiffres ou en lettres
+  //   return words
+  //     .map((word) => {
+  //       // Si le mot est un chiffre en lettres, on le remplace par le chiffre correspondant
+  //       if (wordsToNumber[word.toLowerCase()]) {
+  //         return wordsToNumber[word.toLowerCase()];
+  //       }
+  //       // Si le mot est un chiffre, on le garde
+  //       if (/\d/.test(word)) {
+  //         return word;
+  //       }
+  //       // Sinon, on retourne null
+  //       return null;
+  //     })
+  //     .filter(Boolean); // Filtrer les éléments null pour garder seulement les chiffres
+  // };
+
+  // const num = extractNumbers(transcript);
+
+  // setExtrNumber(num[0]);
+
+  const dispatchVoice = (cmpExist, id) => {
     const data = {
       voix_detectee: transcript,
     };
-    if (lumiereExist) {
+    if (cmpExist) {
       const updateDevices = async () => {
         try {
           const response = await axios.put(
-            "http://10.0.2.2:3001/api/devices/1",
+            `http://10.0.2.2:3001/api/devices/${id}`,
             data,
             {
               headers: {
@@ -83,7 +141,6 @@ const SpeechScreen = () => {
             }
           );
           if (response.status == 200) {
-            console.log(response.data);
             setTranscript("");
           }
         } catch (error) {
@@ -92,121 +149,45 @@ const SpeechScreen = () => {
       };
       updateDevices();
     }
+  };
+  const dispatchVoiceToOptions = (optExist, id) => {
+    const data = {
+      voix_detectee: transcript,
+    };
+    if (optExist) {
+      const updateDevices = async () => {
+        try {
+          const response = await axios.put(
+            `http://10.0.2.2:3001/api/options/${id}`,
+            data,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (response.status == 200) {
+            setTranscript("");
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      updateDevices();
+    }
+  };
 
-    if (televiseurExist) {
-      const updateDevices = async () => {
-        try {
-          const response = await axios.put(
-            "http://10.0.2.2:3001/api/devices/2",
-            data,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          if (response.status == 200) {
-            console.log(response.data);
-            setTranscript("");
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      updateDevices();
-    }
+  useEffect(() => {
+    dispatchVoice(lumiereExist, 1);
+    dispatchVoice(televiseurExist, 2);
+    dispatchVoice(fenetreExist, 3);
+    dispatchVoice(fourExist, 4);
+    dispatchVoice(ledsExist, 5);
+    dispatchVoice(ventilateurExist, 6);
 
-    if (fenetreExist) {
-      const updateDevices = async () => {
-        try {
-          const response = await axios.put(
-            "http://10.0.2.2:3001/api/devices/3",
-            data,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          if (response.status == 200) {
-            console.log(response.data);
-            setTranscript("");
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      updateDevices();
-    }
-
-    if (fourExist) {
-      const updateDevices = async () => {
-        try {
-          const response = await axios.put(
-            "http://10.0.2.2:3001/api/devices/4",
-            data,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          if (response.status == 200) {
-            console.log(response.data);
-            setTranscript("");
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      updateDevices();
-    }
-
-    if (ledsExist) {
-      const updateDevices = async () => {
-        try {
-          const response = await axios.put(
-            "http://10.0.2.2:3001/api/devices/5",
-            data,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          if (response.status == 200) {
-            console.log(response.data);
-            setTranscript("");
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      updateDevices();
-    }
-
-    if (ventilateurExist) {
-      const updateDevices = async () => {
-        try {
-          const response = await axios.put(
-            "http://10.0.2.2:3001/api/devices/6",
-            data,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          if (response.status == 200) {
-            console.log(response.data);
-            setTranscript("");
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      updateDevices();
-    }
+    dispatchVoiceToOptions(tempExist, 1);
+    dispatchVoiceToOptions(humExist, 2);
+    dispatchVoiceToOptions(engExist, 3);
   }, [transcript]);
 
   useEffect(() => {
@@ -215,7 +196,7 @@ const SpeechScreen = () => {
 
   return (
     <View className="flex-1">
-      <View className="mb-20 mt-28 items-center">
+      <View className="mb-14 mt-20 items-center">
         {!recognizing ? (
           <Pressable onPress={handleStart}>
             <Image source={StartVoice} className="w-40 h-40" />
@@ -226,8 +207,22 @@ const SpeechScreen = () => {
           </Pressable>
         )}
       </View>
+      <View className="flex-row justify-around items-center mb-10">
+        <Pressable
+          className="bg-[#FFC800] p-4 w-[40%] rounded-xl"
+          onPress={() => setEcran(true)}
+        >
+          <Text className="text-center text-white">Appareils connectés</Text>
+        </Pressable>
 
-      <Appareils />
+        <Pressable
+          className="bg-[#FFC800] p-4 w-[40%] rounded-xl"
+          onPress={() => setEcran(false)}
+        >
+          <Text className="text-center text-white">Caractéristiques</Text>
+        </Pressable>
+      </View>
+      {ecran ? <Appareils /> : <Options />}
       {/* <Text className="text-white">{transcript}</Text> */}
     </View>
   );
