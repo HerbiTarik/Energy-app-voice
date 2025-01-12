@@ -36,27 +36,73 @@ const Appareils = () => {
       ["ampoule", "lampe", "lumière", "l'ampoule"],
     ];
 
+    const notVoiceLumiere = [
+      ["pas allumer", "ne pas allumer", "n'allume"],
+      ["ampoule", "lampe", "lumière", "l'ampoule"],
+    ];
+
     const voiceTeleviseur = [
       ["allumer", "allume"],
-      ["téléviseur", "télévision"],
+      ["téléviseur", "télévision", "télé"],
     ];
-    const voiceFenetre = [["ouvre", "ouvrir"], ["fenêtre"]];
+
+    const notVoiceTeleviseur = [
+      ["pas allumer", "ne pas allumer", "n'allume"],
+      ["téléviseur", "télévision", "télé"],
+    ];
+
+    const voiceFenetre = [
+      ["ouvre", "ouvrir"],
+      ["fenêtre", "volets"],
+    ];
+    const notVoiceFenetre = [
+      ["pas ouvrir", "n'ouvre pas", "n'ouvre"],
+      ["fenêtre", "volets"],
+    ];
+
     const voiceFour = [
       ["allumer", "allume"],
       ["four", "plaque chauffante"],
     ];
+    const notVoiceFour = [
+      ["pas allumer", "ne pas allumer", "n'allume"],
+      ["four", "plaque chauffante"],
+    ];
+
     const voiceLeds = [
       ["allumer", "allume"],
       ["led", "leds", "LED", "LEDs"],
     ];
+    const notVoiceLeds = [
+      ["pas allumer", "ne pas allumer", "n'allume"],
+      ["led", "leds", "LED", "LEDs"],
+    ];
+
     const voiceVentilateur = [
       ["déclencher", "déclenche", "allumer", "allume"],
-      ["ventilateur", "ventilation"],
+      ["ventilateur", "ventilation", "climatiseur", "clim"],
+    ];
+
+    const notVoiceVentilateur = [
+      [
+        "pas déclencher",
+        "ne déclenche",
+        "pas allumer",
+        "n'allume",
+        "n'allume pas",
+      ],
+      ["ventilateur", "ventilation", "climatiseur", "clim"],
     ];
 
     if (item.id === 1) {
       const lumiereExist = containsWords(item.voix_detectee, voiceLumiere);
-      if (lumiereExist) {
+      const notLumiereExist = containsWords(
+        item.voix_detectee,
+        notVoiceLumiere
+      );
+      if (notLumiereExist) {
+        imageUri = item.img;
+      } else if (lumiereExist) {
         imageUri = item.img_v;
       } else {
         imageUri = item.img;
@@ -67,7 +113,13 @@ const Appareils = () => {
         item.voix_detectee,
         voiceTeleviseur
       );
-      if (televiseurExist) {
+      const notTeleviseurExist = containsWords(
+        item.voix_detectee,
+        notVoiceTeleviseur
+      );
+      if (notTeleviseurExist) {
+        imageUri = item.img;
+      } else if (televiseurExist) {
         imageUri = item.img_v;
       } else {
         imageUri = item.img;
@@ -75,7 +127,13 @@ const Appareils = () => {
     }
     if (item.id === 3) {
       const fenetreExist = containsWords(item.voix_detectee, voiceFenetre);
-      if (fenetreExist) {
+      const notFenetreExist = containsWords(
+        item.voix_detectee,
+        notVoiceFenetre
+      );
+      if (notFenetreExist) {
+        imageUri = item.img;
+      } else if (fenetreExist) {
         imageUri = item.img_v;
       } else {
         imageUri = item.img;
@@ -83,7 +141,10 @@ const Appareils = () => {
     }
     if (item.id === 4) {
       const fourExist = containsWords(item.voix_detectee, voiceFour);
-      if (fourExist) {
+      const notFourExist = containsWords(item.voix_detectee, notVoiceFour);
+      if (notFourExist) {
+        imageUri = item.img;
+      } else if (fourExist) {
         imageUri = item.img_v;
       } else {
         imageUri = item.img;
@@ -91,7 +152,10 @@ const Appareils = () => {
     }
     if (item.id === 5) {
       const ledsExist = containsWords(item.voix_detectee, voiceLeds);
-      if (ledsExist) {
+      const notLedsExist = containsWords(item.voix_detectee, notVoiceLeds);
+      if (notLedsExist) {
+        imageUri = item.img;
+      } else if (ledsExist) {
         imageUri = item.img_v;
       } else {
         imageUri = item.img;
@@ -102,7 +166,13 @@ const Appareils = () => {
         item.voix_detectee,
         voiceVentilateur
       );
-      if (ventilateurExist) {
+      const notVentilateurExist = containsWords(
+        item.voix_detectee,
+        notVoiceVentilateur
+      );
+      if (notVentilateurExist) {
+        imageUri = item.img;
+      } else if (ventilateurExist) {
         imageUri = item.img_v;
       } else {
         imageUri = item.img;

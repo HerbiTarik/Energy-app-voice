@@ -7,8 +7,6 @@ import {
 } from "expo-speech-recognition";
 import StartVoice from "../assets/StartVoice.png";
 import StopVoice from "../assets/StopVoice2.png";
-import ampoule from "../assets/ampoule.png";
-import ampouleAlumee from "../assets/ampouleAlumee.png";
 import Appareils from "./Appareils";
 import axios from "axios";
 import { setVoice } from "../redux/voiceSlice";
@@ -18,12 +16,6 @@ const SpeechScreen = () => {
   const dispatch = useDispatch();
   const [recognizing, setRecognizing] = useState(false);
   const [transcript, setTranscript] = useState("");
-
-  // const containsWords = (text, wordGroups) => {
-  //   return wordGroups.every((group) =>
-  //     group.some((word) => text.includes(word))
-  //   );
-  // };
 
   useSpeechRecognitionEvent("start", () => setRecognizing(true));
   useSpeechRecognitionEvent("end", () => setRecognizing(false));
@@ -59,11 +51,13 @@ const SpeechScreen = () => {
   };
 
   const voiceLumiere = [["ampoule", "lampe", "lumière", "l'ampoule"]];
-  const voiceTeleviseur = [["téléviseur", "télévision"]];
-  const voiceFenetre = [["fenêtre"]];
+  const voiceTeleviseur = [["téléviseur", "télévision", "télé"]];
+  const voiceFenetre = [["fenêtre", "volets"]];
   const voiceFour = [["four", "plaque chauffante"]];
   const voiceLeds = [["led", "leds", "LED", "LEDs"]];
-  const voiceVentilateur = [["ventilateur", "ventilation"]];
+  const voiceVentilateur = [
+    ["ventilateur", "ventilation", "climatiseur", "clim"],
+  ];
 
   const lumiereExist = containsWords(transcript, voiceLumiere);
   const televiseurExist = containsWords(transcript, voiceTeleviseur);
