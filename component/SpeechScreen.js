@@ -12,6 +12,7 @@ import axios from "axios";
 import { setVoice } from "../redux/voiceSlice";
 import { useDispatch } from "react-redux";
 import Options from "./Options";
+import * as Speech from "expo-speech";
 
 const SpeechScreen = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,9 @@ const SpeechScreen = () => {
   });
   useSpeechRecognitionEvent("error", (event) => {
     console.log("error code:", event.error, "error message:", event.message);
+    Speech.speak("Aucun son détecté. Veuillez parler plus fort ?", {
+      language: "fr",
+    });
   });
 
   const handleStart = async () => {

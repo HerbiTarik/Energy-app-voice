@@ -31,6 +31,8 @@ const Options = () => {
     fetchDevices();
   }, [voice]);
 
+  console.log(voice);
+
   const renderItem = ({ item }) => {
     let imageUri = item.img;
 
@@ -70,7 +72,6 @@ const Options = () => {
 
     const phrase = item.voix_detectee;
     const numbers = extractNumbers(phrase);
-    console.log(numbers[0]); // Affichera : ["2", "3"]
 
     const containsWords = (text, wordGroups) => {
       return wordGroups.every((group) =>
