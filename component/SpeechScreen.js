@@ -41,12 +41,12 @@ const SpeechScreen = () => {
     // Start speech recognition
     ExpoSpeechRecognitionModule.start({
       lang: "fr-FR",
-      interimResults: true,
-      maxAlternatives: 1,
-      continuous: false,
-      requiresOnDeviceRecognition: false,
+      interimResults: true, //signifie que les résultats partiels (non terminés) seront fournis avant la fin de la dictée.
+      maxAlternatives: 1, //le nombre maximum d'alternatives que le moteur de reconnaissance vocale doit fournir pour chaque résultat.
+      continuous: false, //détermine si la reconnaissance vocale doit continuer à écouter même après une pause.
+      requiresOnDeviceRecognition: false, //si la reconnaissance vocale doit se faire localement sur l'appareil ou peut utiliser des services en ligne.
       addsPunctuation: false,
-      contextualStrings: ["Carlsen", "Nepomniachtchi", "Praggnanandhaa"],
+      contextualStrings: ["Carlsen", "Nepomniachtchi", "Praggnanandhaa"], //une liste de chaînes contextuelles pour aider le moteur de reconnaissance vocale à mieux comprendre des mots spécifiques qui pourraient ne pas être reconnus facilement
     });
   };
 
